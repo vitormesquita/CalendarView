@@ -27,9 +27,9 @@ import UIKit
 
 open class CalendarDayCell: UICollectionViewCell {
     
-    let textLabel   = UILabel()
-    private let dotsView    = UIView()
-    private let bgView      = UIView()
+    let textLabel = UILabel()
+    private let bgView = UIView()
+    private let dotsView = UIView()
     
     var eventsCount = 0 {
         didSet {

@@ -138,17 +138,49 @@
 		BEFD65741ACC074A00ADE917 /* CalendarView */ = {
 			isa = PBXGroup;
 			children = (
-				C7C16A6F1CBBE536004DC8CF /* CalendarView.swift */,
-				FC3FB289200F912000469B6B /* CalendarView+Style.swift */,
-				C7C16A6C1CBBE536004DC8CF /* CalendarDayCell.swift */,
-				C7C16A6D1CBBE536004DC8CF /* CalendarFlowLayout.swift */,
-				C7C16A6E1CBBE536004DC8CF /* CalendarHeaderView.swift */,
-				C7EF3F451F9F846000C2DF2D /* CalendarView+DataSource.swift */,
-				C7EF3F471F9F84ED00C2DF2D /* CalendarView+Delegate.swift */,
-				C7EF3F4B1FA1D6F900C2DF2D /* EventsLoader.swift */,
-				C7EF3F491F9F8DF800C2DF2D /* CalendarView+Extensions.swift */,
+				FC3FB28F200FA80000469B6B /* Utils */,
+				FC3FB28E200FA7DC00469B6B /* Header */,
+				FC3FB28D200FA6FC00469B6B /* CalendarView */,
+				FC3FB28C200FA6EC00469B6B /* Cell */,
 			);
 			path = CalendarView;
+			sourceTree = "<group>";
+		};
+		FC3FB28C200FA6EC00469B6B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C7C16A6C1CBBE536004DC8CF /* CalendarDayCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		FC3FB28D200FA6FC00469B6B /* CalendarView */ = {
+			isa = PBXGroup;
+			children = (
+				C7C16A6F1CBBE536004DC8CF /* CalendarView.swift */,
+				FC3FB289200F912000469B6B /* CalendarView+Style.swift */,
+				C7C16A6D1CBBE536004DC8CF /* CalendarFlowLayout.swift */,
+				C7EF3F451F9F846000C2DF2D /* CalendarView+DataSource.swift */,
+				C7EF3F471F9F84ED00C2DF2D /* CalendarView+Delegate.swift */,
+			);
+			path = CalendarView;
+			sourceTree = "<group>";
+		};
+		FC3FB28E200FA7DC00469B6B /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				C7C16A6E1CBBE536004DC8CF /* CalendarHeaderView.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		FC3FB28F200FA80000469B6B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C7EF3F491F9F8DF800C2DF2D /* CalendarView+Extensions.swift */,
+				C7EF3F4B1FA1D6F900C2DF2D /* EventsLoader.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
