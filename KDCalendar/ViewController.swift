@@ -137,8 +137,10 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
     }
     
     @IBAction func goToPreviousMonth(_ sender: Any) {
-        self.calendarView.goToPreviousMonth()
+//        self.calendarView.goToPreviousMonth()
+        self.calendarView.selectDate(Date())
     }
+    
     @IBAction func goToNextMonth(_ sender: Any) {
         self.calendarView.goToNextMonth()
         

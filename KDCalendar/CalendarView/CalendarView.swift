@@ -93,22 +93,6 @@ public class CalendarView: UIView {
     internal var monthInfoForSection = [Int:(firstDay: Int, daysTotal: Int)]()
     internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
     
-    var events: [CalendarEvent] = [] {
-        didSet {
-            self.eventsByIndexPath.removeAll()
-            
-            for event in events {
-                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
-                
-                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
-                eventsForIndexPath.append(event)
-                eventsByIndexPath[indexPath] = eventsForIndexPath
-            }
-            
-            DispatchQueue.main.async { self.collectionView.reloadData() }
-        }
-    }
-    
     var flowLayout: CalendarFlowLayout {
         return self.collectionView.collectionViewLayout as! CalendarFlowLayout
     }
@@ -125,6 +109,22 @@ public class CalendarView: UIView {
         didSet {
             flowLayout.scrollDirection = direction
             self.collectionView.reloadData()
+        }
+    }
+    
+    public var events: [CalendarEvent] = [] {
+        didSet {
+            self.eventsByIndexPath.removeAll()
+            
+            for event in events {
+                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
+                
+                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
+                eventsForIndexPath.append(event)
+                eventsByIndexPath[indexPath] = eventsForIndexPath
+            }
+            
+            DispatchQueue.main.async { self.collectionView.reloadData() }
         }
     }
     
