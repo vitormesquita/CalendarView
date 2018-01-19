@@ -119,7 +119,7 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
         
         print("Did Select: \(date) with \(events.count) events")
         for event in events {
-            print("\t\"\(event.title)\" - Starting at:\(event.startDate)")
+            print("\t\"\(event.title ?? "")\" - Starting at:\(event.startDate)")
         }
         
     }

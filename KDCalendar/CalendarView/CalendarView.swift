@@ -33,9 +33,17 @@ struct EventLocation {
 }
 
 public struct CalendarEvent {
-    let title: String
+
     let startDate: Date
-    let endDate:Date
+    let endDate: Date
+    
+    let title: String?
+    
+    public init(startDate: Date, endDate: Date, title: String? = nil) {
+        self.startDate = startDate
+        self.endDate = endDate
+        self.title = title
+    }
 }
 
 public protocol CalendarViewDataSource {
