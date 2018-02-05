@@ -119,7 +119,7 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
         
         print("Did Select: \(date) with \(events.count) events")
         for event in events {
-            print("\t\"\(event.title)\" - Starting at:\(event.startDate)")
+            print("\t\"\(event.title ?? "")\" - Starting at:\(event.startDate)")
         }
         
     }
@@ -137,8 +137,10 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
     }
     
     @IBAction func goToPreviousMonth(_ sender: Any) {
-        self.calendarView.goToPreviousMonth()
+//        self.calendarView.goToPreviousMonth()
+        self.calendarView.selectDate(Date())
     }
+    
     @IBAction func goToNextMonth(_ sender: Any) {
         self.calendarView.goToNextMonth()
         

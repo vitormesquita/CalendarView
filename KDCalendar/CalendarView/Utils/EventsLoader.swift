@@ -58,9 +58,9 @@ open class EventsLoader {
         
         let events = store.events(matching: predicate).map {
             return CalendarEvent(
-                title:      $0.title,
                 startDate:  $0.startDate.addingTimeInterval(secondsFromGMTDifference),
-                endDate:    $0.endDate.addingTimeInterval(secondsFromGMTDifference)
+                endDate:    $0.endDate.addingTimeInterval(secondsFromGMTDifference),
+                title:      $0.title
             )
         }
         

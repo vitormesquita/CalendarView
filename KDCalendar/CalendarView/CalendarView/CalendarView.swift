@@ -33,9 +33,17 @@ struct EventLocation {
 }
 
 public struct CalendarEvent {
-    let title: String
+
     let startDate: Date
-    let endDate:Date
+    let endDate: Date
+    
+    let title: String?
+    
+    public init(startDate: Date, endDate: Date, title: String? = nil) {
+        self.startDate = startDate
+        self.endDate = endDate
+        self.title = title
+    }
 }
 
 public protocol CalendarViewDataSource {
@@ -55,10 +63,11 @@ extension CalendarViewDataSource {
 
 public protocol CalendarViewDelegate {
     
-    /* optional */ func calendar(_ calendar : CalendarView, canSelectDate date : Date) -> Bool
     func calendar(_ calendar : CalendarView, didScrollToMonth date : Date) -> Void
     func calendar(_ calendar : CalendarView, didSelectDate date : Date, withEvents events: [CalendarEvent]) -> Void
-    /* optional */ func calendar(_ calendar : CalendarView, didDeselectDate date : Date) -> Void
+    /* optional */
+    func calendar(_ calendar : CalendarView, canSelectDate date : Date) -> Bool
+    func calendar(_ calendar : CalendarView, didDeselectDate date : Date) -> Void
 }
 
 extension CalendarViewDelegate {
@@ -92,22 +101,6 @@ public class CalendarView: UIView {
     internal var monthInfoForSection = [Int:(firstDay: Int, daysTotal: Int)]()
     internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
     
-    var events: [CalendarEvent] = [] {
-        didSet {
-            self.eventsByIndexPath.removeAll()
-            
-            for event in events {
-                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
-                
-                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
-                eventsForIndexPath.append(event)
-                eventsByIndexPath[indexPath] = eventsForIndexPath
-            }
-            
-            DispatchQueue.main.async { self.collectionView.reloadData() }
-        }
-    }
-    
     var flowLayout: CalendarFlowLayout {
         return self.collectionView.collectionViewLayout as! CalendarFlowLayout
     }
@@ -124,6 +117,22 @@ public class CalendarView: UIView {
         didSet {
             flowLayout.scrollDirection = direction
             self.collectionView.reloadData()
+        }
+    }
+    
+    public var events: [CalendarEvent] = [] {
+        didSet {
+            self.eventsByIndexPath.removeAll()
+            
+            for event in events {
+                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
+                
+                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
+                eventsForIndexPath.append(event)
+                eventsByIndexPath[indexPath] = eventsForIndexPath
+            }
+            
+            DispatchQueue.main.async { self.collectionView.reloadData() }
         }
     }
     
@@ -200,22 +209,6 @@ public class CalendarView: UIView {
             height: (frame.size.height - CalendarView.Style.headerHeight) / 6.0 // maximum number of rows
         )
     }
-
-    func reloadData() {
-        self.collectionView.reloadData()
-    }
-
-    func setDisplayDate(_ date : Date, animated: Bool = false) {
-        
-        guard (date > startDateCache) && (date < endDateCache) else { return }
-        
-        self.collectionView.setContentOffset(
-            self.scrollViewOffset(for: date),
-            animated: animated
-        )
-        
-        self.displayDateOnHeader(date)
-    }
     
     internal func resetDisplayDate() {
         guard let displayDate = self.displayDate else { return }
@@ -240,30 +233,6 @@ public class CalendarView: UIView {
     }
 }
 
-// MARK: Selection of Dates
-
-extension CalendarView {
-    
-    func selectDate(_ date : Date) {
-        guard let indexPath = self.indexPathForDate(date) else { return }
-        
-        self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition())
-        
-        self.collectionView(collectionView, didSelectItemAt: indexPath)
-        
-        
-    }
-    
-    func deselectDate(_ date : Date) {
-        guard let indexPath = self.indexPathForDate(date) else { return }
-        
-        self.collectionView.deselectItem(at: indexPath, animated: false)
-        
-        self.collectionView(collectionView, didSelectItemAt: indexPath)
-        
-    }
-}
-
 // MARK: Convertion
 
 extension CalendarView {
@@ -277,11 +246,7 @@ extension CalendarView {
             let month = distanceFromStartDate.month,
             let (firstDayIndex, _) = monthInfoForSection[month] else { return nil }
         
-        return IndexPath(
-            item: day + firstDayIndex,
-            section: month
-        )
-        
+        return IndexPath(item: day + firstDayIndex, section: month)
     }
     
     func dateFromIndexPath(_ indexPath: IndexPath) -> Date? {
@@ -306,17 +271,66 @@ extension CalendarView {
         
         var dateComponents = DateComponents()
         dateComponents.month = offset;
-        
+    
         guard let newDate = self.calendar.date(byAdding: dateComponents, to: displayDate) else { return }
-        
         self.setDisplayDate(newDate, animated: true)
     }
+}
+
+// MARK: - Public methods
+extension CalendarView {
     
-    func goToNextMonth() {
+    /*
+     method: - reloadData
+     function: - reload all components in collection view
+     */
+    public func reloadData() {
+        self.collectionView.reloadData()
+    }
+    
+    /*
+     method: - setDisplayDate
+     params:
+     - date: Date to extract month and year to scroll at correct section;
+     - animated: to handle animation if want;
+     function: - scroll calendar at date (month/year) passed as parameter.
+     */
+    public func setDisplayDate(_ date : Date, animated: Bool = false) {
+        
+        guard (date > startDateCache) && (date < endDateCache) else { return }
+        self.collectionView.setContentOffset(self.scrollViewOffset(for: date), animated: animated)
+        self.displayDateOnHeader(date)
+    }
+    
+    /*
+     TODO
+     */
+    public func selectDate(_ date : Date) {
+        guard let indexPath = self.indexPathForDate(date) else { return }
+        self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition())
+        self.collectionView(collectionView, didSelectItemAt: indexPath)
+    }
+    
+    /*
+     TODO
+     */
+    public func deselectDate(_ date : Date) {
+        guard let indexPath = self.indexPathForDate(date) else { return }
+        self.collectionView.deselectItem(at: indexPath, animated: false)
+        self.collectionView(collectionView, didSelectItemAt: indexPath)
+    }
+    
+    /*
+     TODO
+     */
+    public func goToNextMonth() {
         goToMonthWithOffet(1)
     }
     
-    func goToPreviousMonth() {
+    /*
+     TODO
+     */
+    public func goToPreviousMonth() {
         goToMonthWithOffet(-1)
     }
 }

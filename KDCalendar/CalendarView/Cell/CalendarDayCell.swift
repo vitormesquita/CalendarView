@@ -66,10 +66,7 @@ open class CalendarDayCell: UICollectionViewCell {
         
         if CalendarView.Style.cellShape.isRound { // square of
             let smallestSide = min(elementsFrame.width, elementsFrame.height)
-            elementsFrame = elementsFrame.insetBy(
-                dx: (elementsFrame.width - smallestSide) / 2.0,
-                dy: (elementsFrame.height - smallestSide) / 2.0
-            )
+            elementsFrame = elementsFrame.insetBy(dx: (elementsFrame.width - smallestSide) / 2.0, dy: (elementsFrame.height - smallestSide) / 2.0)
         }
         
         self.bgView.frame           = elementsFrame
