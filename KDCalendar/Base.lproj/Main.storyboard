@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -25,11 +24,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hW4-le-uM3" customClass="CalendarView" customModule="CalendarView" customModuleProvider="target">
                                 <rect key="frame" x="16" y="36" width="343" height="343"/>
                                 <color key="backgroundColor" red="0.94004629629629632" green="0.80393518518518514" blue="0.87748842592592591" alpha="0.87" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="hW4-le-uM3" secondAttribute="height" id="773-eW-lgj"/>
-                                </constraints>
                             </view>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZI5-5E-Eq0">
+                            <datePicker hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZI5-5E-Eq0">
                                 <rect key="frame" x="16" y="431" width="343" height="216"/>
                                 <date key="date" timeIntervalSinceReferenceDate="482061469.277242">
                                     <!--2016-04-11 09:57:49 +0000-->
@@ -87,6 +83,7 @@
                             <constraint firstItem="hW4-le-uM3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="8wO-aF-0Eb"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ZI5-5E-Eq0" secondAttribute="bottom" constant="20" id="EM0-cT-QdX"/>
                             <constraint firstItem="BMl-ka-oh2" firstAttribute="top" secondItem="hW4-le-uM3" secondAttribute="bottom" constant="8" id="KWY-nY-Oys"/>
+                            <constraint firstItem="ZI5-5E-Eq0" firstAttribute="top" secondItem="BMl-ka-oh2" secondAttribute="bottom" constant="14" id="KkZ-8A-NM7"/>
                             <constraint firstItem="hW4-le-uM3" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="16" id="MZh-zF-zaS"/>
                             <constraint firstItem="BMl-ka-oh2" firstAttribute="trailing" secondItem="hW4-le-uM3" secondAttribute="trailing" id="Prb-A3-Qwc"/>
                             <constraint firstAttribute="trailing" secondItem="ZI5-5E-Eq0" secondAttribute="trailing" constant="16" id="jgi-JH-Dcg"/>

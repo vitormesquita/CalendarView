@@ -100,7 +100,7 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
         var monthsOffsetComponents = DateComponents()
         monthsOffsetComponents.month = page
         
-        return self.calendar.date(byAdding: monthsOffsetComponents, to: self.startOfMonthCache);
+        return self.calendar.date(byAdding: monthsOffsetComponents, to: self.cacheOfStartOfMonth);
     }
     
     func displayDateOnHeader(_ date: Date) {

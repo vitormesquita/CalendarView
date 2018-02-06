@@ -29,62 +29,17 @@ extension CalendarView: UICollectionViewDataSource {
     
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
+        guard self.startDate <= self.endDate else { fatalError("Start date cannot be later than end date.") }
         
-        guard let dateSource = self.dataSource else { return 0 }
-        
-        self.startDateCache = dateSource.startDate()
-        self.endDateCache   = dateSource.endDate()
-        
-        guard self.startDateCache <= self.endDateCache else { fatalError("Start date cannot be later than end date.") }
-        
-        var firstDayOfStartMonthComponents = self.calendar.dateComponents([.era, .year, .month], from: self.startDateCache)
-        firstDayOfStartMonthComponents.day = 1
-        
-        let firstDayOfStartMonthDate = self.calendar.date(from: firstDayOfStartMonthComponents)!
-        
-        self.startOfMonthCache = firstDayOfStartMonthDate
-        
-        var lastDayOfEndMonthComponents = self.calendar.dateComponents([.era, .year, .month], from: self.endDateCache)
-        let range = self.calendar.range(of: .day, in: .month, for: self.endDateCache)!
-        lastDayOfEndMonthComponents.day = range.count
-        
-        self.endOfMonthCache = self.calendar.date(from: lastDayOfEndMonthComponents)!
-        
-        let today = Date()
-        
-        if (self.startOfMonthCache ... self.endOfMonthCache).contains(today) {
-            
-            let distanceFromTodayComponents = self.calendar.dateComponents([.month, .day], from: self.startOfMonthCache, to: today)
-            
-            self.todayIndexPath = IndexPath(item: distanceFromTodayComponents.day!, section: distanceFromTodayComponents.month!)
-        }
+        todayIndexPath = getTodayIndexPath(startDate: cacheOfStartOfMonth, endDate: cacheOfEndOfMonth)
         
         // if we are for example on the same month and the difference is 0 we still need 1 to display it
-        return self.calendar.dateComponents([.month], from: startOfMonthCache, to: endOfMonthCache).month! + 1
-    }
-    
-    public func getMonthInfo(for date: Date) -> (firstDay: Int, daysTotal: Int)? {
-        
-        var firstWeekdayOfMonthIndex    = self.calendar.component(.weekday, from: date)
-        firstWeekdayOfMonthIndex        = (firstWeekdayOfMonthIndex + 6) % 7
-        
-        guard let rangeOfDaysInMonth = self.calendar.range(of: .day, in: .month, for: date) else { return nil }
-        
-        return (firstDay: firstWeekdayOfMonthIndex, daysTotal: rangeOfDaysInMonth.count)
+        return self.calendar.dateComponents([.month], from: cacheOfStartOfMonth, to: cacheOfEndOfMonth).month! + 1
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        var monthOffsetComponents = DateComponents()
-        monthOffsetComponents.month = section;
-        
-        guard let correctMonthForSectionDate = self.calendar.date(byAdding: monthOffsetComponents, to: startOfMonthCache),
-            let info = self.getMonthInfo(for: correctMonthForSectionDate) else { return 0 }
-        
-        self.monthInfoForSection[section] = info
-        
-        return 42 // rows:7 x cols:6
-        
+        guard buildMonthInfoBy(section: section) else { return 0 }
+        return Int(numberOfDaysInWeek * maxNumberOfWeeks)
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -106,9 +61,9 @@ extension CalendarView: UICollectionViewDataSource {
             dayCell.isHidden = true
         }
         
-        if indexPath.section == 0 && indexPath.item == 0 {
-            self.scrollViewDidEndDecelerating(collectionView)
-        }
+//        if indexPath.section == 0 && indexPath.item == 0 {
+//            self.scrollViewDidEndDecelerating(collectionView)
+//        }
         
         let isToday = (todayIndexPath != nil) ? (todayIndexPath!.section == indexPath.section && todayIndexPath!.item + firstDayIndex == indexPath.item) : false
         let isSelected = selectedIndexPaths.contains(indexPath)

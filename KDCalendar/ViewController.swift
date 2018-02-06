@@ -26,7 +26,7 @@
 import UIKit
 import EventKit
 
-class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDelegate {
+class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarViewDelegate {
 
     
     @IBOutlet weak var calendarView: CalendarView!
@@ -47,7 +47,7 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
         CalendarView.Style.cellTextColorToday = UIColor(red:0.31, green:0.44, blue:0.47, alpha:1.00)
         CalendarView.Style.cellBeforeTodayTextColor = UIColor(white: 0, alpha: 0.3)
         
-        calendarView.dataSource = self
+//        calendarView.dataSource = self
         calendarView.delegate = self
         
         calendarView.direction = .horizontal
@@ -55,6 +55,8 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
         
         calendarView.backgroundColor = UIColor(red:0.31, green:0.44, blue:0.47, alpha:1.00)
         
+        calendarView.startDate = startDate()
+        calendarView.endDate = endDate()
         
     }
     
@@ -64,7 +66,7 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
         
         EventsLoader.load(from: self.startDate(), to: self.endDate()) { // (events:[CalendarEvent]?) in
             if let events = $0 {
-                self.calendarView.events = events
+//                self.calendarView.events = events
             } else {
                 // notify for access not access not granted
             }
@@ -87,29 +89,20 @@ class ViewController: UIViewController, CalendarViewDataSource, CalendarViewDele
     // MARK : KDCalendarDataSource
     
     func startDate() -> Date {
-        
         var dateComponents = DateComponents()
         dateComponents.month = -3
-        
         let today = Date()
-        
         let threeMonthsAgo = self.calendarView.calendar.date(byAdding: dateComponents, to: today)!
-        
         return threeMonthsAgo
     }
     
     func endDate() -> Date {
-        
         var dateComponents = DateComponents()
-      
         dateComponents.month = 2;
         dateComponents.day = -10
         let today = Date()
-        
         let twoYearsFromNow = self.calendarView.calendar.date(byAdding: dateComponents, to: today)!
-        
         return twoYearsFromNow
-  
     }
     
     
