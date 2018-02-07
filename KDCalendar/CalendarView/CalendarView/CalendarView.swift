@@ -33,16 +33,7 @@ internal let cellReuseIdentifier = "CalendarDayCell"
 
 public class CalendarView: UIView {
     
-    internal var displayDate: Date?
-    internal var todayIndexPath: IndexPath?
-    
-    internal var selectedIndexPaths = [IndexPath]()
-    
-    internal var monthInfoForSection = [Int: (firstDay: Int, daysTotal: Int)]()
-    internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
-    
     // MARK: - Public
-    
     public var multipleSelectionEnable = true
     public var delegate: CalendarViewDelegate?
     
@@ -84,17 +75,24 @@ public class CalendarView: UIView {
     }
     
     // MARK: - Internal
-    
     internal var cacheOfEndOfMonth  = Date()
     internal var cacheOfStartOfMonth = Date()
+    
+    internal var displayDate: Date?
+    internal var todayIndexPath: IndexPath?
+    
+    internal var selectedIndexPaths = [IndexPath]()
+    
+    internal var monthInfoForSection = [Int: (firstDay: Int, daysTotal: Int)]()
+    internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
+    
+    // MARK: - Internal lazys
     
     internal lazy var calendar : Calendar = {
         var gregorian = Calendar(identifier: .gregorian)
         gregorian.timeZone = TimeZone(abbreviation: "UTC")!
         return gregorian
     }()
-    
-    // MARK: - Views
     
     internal lazy var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView()
@@ -120,8 +118,7 @@ public class CalendarView: UIView {
         return flowLayout
     }()
     
-    // MARK: Put a name after
-    
+    // MARK: UIView methods
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
@@ -142,7 +139,6 @@ public class CalendarView: UIView {
         
         autoLayout()
         flowLayout.itemSize = self.cellSize()
-        resetDisplayDate()
     }
     
     // MARK: Create Subviews
@@ -159,6 +155,7 @@ public class CalendarView: UIView {
         collectionView.register(CalendarDayViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
     }
     
+    // MARK: - Layout
     private func autoLayout() {
         let headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
                                  headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
@@ -177,79 +174,6 @@ public class CalendarView: UIView {
     private func cellSize() -> CGSize {
         return CGSize(width: bounds.size.width/numberOfDaysInWeek, height: (bounds.size.height - CalendarView.Style.headerHeight)/maxNumberOfWeeks)
     }
-    
-    internal func resetDisplayDate() {
-        guard let displayDate = self.displayDate else { return }
-        self.collectionView.setContentOffset(self.scrollViewOffset(for: displayDate), animated: false)
-    }
-}
-
-// MARK: Convertion
-
-extension CalendarView {
-    
-    func indexPathForDate(_ date : Date) -> IndexPath? {
-        
-        let distanceFromStartDate = self.calendar.dateComponents([.month, .day], from: self.cacheOfStartOfMonth, to: date)
-        
-        guard
-            let day   = distanceFromStartDate.day,
-            let month = distanceFromStartDate.month,
-            let (firstDayIndex, _) = monthInfoForSection[month] else { return nil }
-        
-        return IndexPath(item: day + firstDayIndex, section: month)
-    }
-    
-    func dateFromIndexPath(_ indexPath: IndexPath) -> Date? {
-        
-        let month = indexPath.section
-        
-        guard let monthInfo = monthInfoForSection[month] else { return nil }
-        
-        var components      = DateComponents()
-        components.month    = month
-        components.day      = indexPath.item - monthInfo.firstDay
-        
-        return self.calendar.date(byAdding: components, to: self.cacheOfStartOfMonth)
-    }
-    
-    func scrollViewOffset(for date: Date) -> CGPoint {
-        var point = CGPoint.zero
-        
-        guard let sections = self.indexPathForDate(date)?.section else { return point }
-        
-        switch self.direction {
-        case .horizontal:   point.x = CGFloat(sections) * self.collectionView.frame.size.width
-        case .vertical:     point.y = CGFloat(sections) * self.collectionView.frame.size.height
-        }
-        
-        return point
-    }
-}
-
-extension CalendarView {
-    
-    func goToMonthWithOffet(_ offset: Int) {
-        
-        guard let displayDate = self.displayDate else { return }
-        
-        var dateComponents = DateComponents()
-        dateComponents.month = offset;
-        
-        guard let newDate = self.calendar.date(byAdding: dateComponents, to: displayDate) else { return }
-        self.setDisplayDate(newDate, animated: true)
-    }
-    
-    /**
-     - parameters:
-        - date: Date to extract month and year to scroll at correct section
-        - animated: to handle animation if want
-     */
-    private func setDisplayDate(_ date : Date, animated: Bool = false) {
-        guard (date > startDate) && (date < endDate) else { return }
-        self.collectionView.setContentOffset(self.scrollViewOffset(for: date), animated: animated)
-        self.displayDateOnHeader(date)
-    }
 }
 
 // MARK: - Public methods
@@ -265,7 +189,7 @@ extension CalendarView {
     /**
      Selected date and scroll at correspondent month
      */
-    public func selectDate(_ date : Date) {
+    public func selectDate(_ date: Date) {
         guard let indexPath = self.indexPathForDate(date) else { return }
         self.collectionView(collectionView, didSelectItemAt: indexPath)
         
@@ -275,23 +199,23 @@ extension CalendarView {
     }
     
     /*
-     TODO
+     Deselect date from a date
      */
-    public func deselectDate(_ date : Date) {
+    public func deselectDate(_ date: Date) {
         guard let indexPath = self.indexPathForDate(date) else { return }
         self.collectionView.deselectItem(at: indexPath, animated: false)
         self.collectionView(collectionView, didSelectItemAt: indexPath)
     }
     
     /*
-     TODO
+     Scroll to next month by current
      */
     public func goToNextMonth() {
         goToMonthWithOffet(1)
     }
     
     /*
-     TODO
+     Scroll to previus month by current
      */
     public func goToPreviousMonth() {
         goToMonthWithOffet(-1)

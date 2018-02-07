@@ -39,7 +39,6 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
         } else {
             
             if !multipleSelectionEnable { selectedIndexPaths.removeAll() }
-            
             selectedIndexPaths.append(indexPath)
             
             let eventsForDaySelected = eventsByIndexPath[indexPath] ?? []
@@ -68,40 +67,5 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
     
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         self.updateAndNotifyScrolling()
-    }
-    
-    func updateAndNotifyScrolling() {
-        guard let date = self.dateFromScrollViewPosition() else { return }
-        self.displayDateOnHeader(date)
-        self.delegate?.calendar(self, didScrollToMonth: date)
-    }
-
-    @discardableResult
-    func dateFromScrollViewPosition() -> Date? {
-        var page: Int = 0
-        
-        switch self.direction {
-        case .horizontal:   page = Int(floor(self.collectionView.contentOffset.x / self.collectionView.bounds.size.width))
-        case .vertical:     page = Int(floor(self.collectionView.contentOffset.y / self.collectionView.bounds.size.height))
-        }
-        
-        page = page > 0 ? page : 0
-        
-        var monthsOffsetComponents = DateComponents()
-        monthsOffsetComponents.month = page
-        
-        return self.calendar.date(byAdding: monthsOffsetComponents, to: self.cacheOfStartOfMonth);
-    }
-    
-    func displayDateOnHeader(_ date: Date) {
-        let month = self.calendar.component(.month, from: date) // get month
-        
-        let monthName = DateFormatter().monthSymbols[(month-1) % 12] // 0 indexed array
-        
-        let year = self.calendar.component(.year, from: date)
-
-        self.headerView.monthLabel.text = monthName + " " + String(year)
-        
-        self.displayDate = date
     }
 }
