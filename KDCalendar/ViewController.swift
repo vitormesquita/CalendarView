@@ -121,7 +121,7 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
     // MARK : Events
     
     @IBAction func onValueChange(_ picker : UIDatePicker) {
-        self.calendarView.setDisplayDate(picker.date, animated: true)
+        self.calendarView.selectDate(picker.date)
     }
     
     @IBAction func goToPreviousMonth(_ sender: Any) {
