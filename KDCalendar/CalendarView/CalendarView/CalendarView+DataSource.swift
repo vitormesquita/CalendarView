@@ -46,13 +46,14 @@ extension CalendarView: UICollectionViewDataSource {
         
         let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarDayCell
         
-        guard let (firstDayIndex, numberOfDaysTotal) = self.monthInfoForSection[indexPath.section] else { return dayCell }
+        guard let (firstWeekDayIndex, totalNumberOfDays) = self.monthInfoForSection[indexPath.section] else { return dayCell }
         
-        let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - firstDayIndex, section: indexPath.section) // if the first is wednesday, add 2
+        let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - firstWeekDayIndex, section: indexPath.section) // if the first is wednesday, add 2
         
-        let lastDayIndex = firstDayIndex + numberOfDaysTotal
+        let lastDayIndex = firstWeekDayIndex + totalNumberOfDays
         
-        if (firstDayIndex..<lastDayIndex).contains(indexPath.item) { // item within range from first to last day
+        //TODO Refactoring this
+        if (firstWeekDayIndex..<lastDayIndex).contains(indexPath.item) { // item within range from first to last day
             dayCell.textLabel.text = String(fromStartOfMonthIndexPath.item + 1)
             dayCell.isHidden = false
             
@@ -60,14 +61,12 @@ extension CalendarView: UICollectionViewDataSource {
             dayCell.textLabel.text = ""
             dayCell.isHidden = true
         }
+
         
-//        if indexPath.section == 0 && indexPath.item == 0 {
-//            self.scrollViewDidEndDecelerating(collectionView)
-//        }
-        
-        let isToday = (todayIndexPath != nil) ? (todayIndexPath!.section == indexPath.section && todayIndexPath!.item + firstDayIndex == indexPath.item) : false
+        let isToday = (todayIndexPath != nil) ? (todayIndexPath!.section == indexPath.section && todayIndexPath!.item + firstWeekDayIndex == indexPath.item) : false
         let isSelected = selectedIndexPaths.contains(indexPath)
-        let isBeforeToday = todayIndexPath != nil ? indexPath < todayIndexPath! : false
+        
+        let isBeforeToday = todayIndexPath != nil ? indexPath < todayIndexPath! : true
         
         dayCell.manageStyle(isToday: isToday, isSelected: isSelected, isBeforeToday: isBeforeToday)
         

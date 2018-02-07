@@ -59,7 +59,6 @@ open class CalendarDayCell: UICollectionViewCell {
     }
     
     override open func layoutSubviews() {
-        
         super.layoutSubviews()
         
         var elementsFrame = self.bounds.insetBy(dx: 3.0, dy: 3.0)

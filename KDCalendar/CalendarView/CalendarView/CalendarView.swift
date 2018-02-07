@@ -91,21 +91,21 @@ public class CalendarView: UIView {
     
     internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
     
-//    public var events: [CalendarEvent] = [] {
-//        didSet {
-//            self.eventsByIndexPath.removeAll()
-//
-//            for event in events {
-//                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
-//
-//                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
-//                eventsForIndexPath.append(event)
-//                eventsByIndexPath[indexPath] = eventsForIndexPath
-//            }
-//
-//            DispatchQueue.main.async { self.collectionView.reloadData() }
-//        }
-//    }
+    //    public var events: [CalendarEvent] = [] {
+    //        didSet {
+    //            self.eventsByIndexPath.removeAll()
+    //
+    //            for event in events {
+    //                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
+    //
+    //                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
+    //                eventsForIndexPath.append(event)
+    //                eventsByIndexPath[indexPath] = eventsForIndexPath
+    //            }
+    //
+    //            DispatchQueue.main.async { self.collectionView.reloadData() }
+    //        }
+    //    }
     
     // MARK: - Public
     
@@ -146,7 +146,7 @@ public class CalendarView: UIView {
         gregorian.timeZone = TimeZone(abbreviation: "UTC")!
         return gregorian
     }()
-
+    
     // MARK: - Views
     
     internal lazy var headerView: CalendarHeaderView = {
@@ -201,7 +201,7 @@ public class CalendarView: UIView {
     // MARK: Create Subviews
     private func setup() {
         clipsToBounds = true
-    
+        
         addSubview(self.headerView)
         addSubview(self.collectionView)
         
@@ -296,39 +296,39 @@ extension CalendarView {
         guard let newDate = self.calendar.date(byAdding: dateComponents, to: displayDate) else { return }
         self.setDisplayDate(newDate, animated: true)
     }
+    
+    /**
+     - parameters:
+        - date: Date to extract month and year to scroll at correct section
+        - animated: to handle animation if want
+     */
+    private func setDisplayDate(_ date : Date, animated: Bool = false) {
+        guard (date > startDate) && (date < endDate) else { return }
+        self.collectionView.setContentOffset(self.scrollViewOffset(for: date), animated: animated)
+        self.displayDateOnHeader(date)
+    }
 }
 
 // MARK: - Public methods
 extension CalendarView {
     
-    /*
-     method: - reloadData
-     function: - reload all components in collection view
+    /**
+     Reload all components in collection view
      */
     public func reloadData() {
         self.collectionView.reloadData()
     }
     
-    
     /**
-     - parameters:
-     - date: Date to extract month and year to scroll at correct section
-     - animated: to handle animation if want
-     */
-    public func setDisplayDate(_ date : Date, animated: Bool = false) {
-        
-        guard (date > startDate) && (date < endDate) else { return }
-        self.collectionView.setContentOffset(self.scrollViewOffset(for: date), animated: animated)
-        self.displayDateOnHeader(date)
-    }
-    
-    /*
-     TODO
+     Selected date and scroll at correspondent month
      */
     public func selectDate(_ date : Date) {
         guard let indexPath = self.indexPathForDate(date) else { return }
-        self.collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition())
         self.collectionView(collectionView, didSelectItemAt: indexPath)
+        
+        var centeredIndexPath = indexPath
+        centeredIndexPath.item = 17 //work around center item of section
+        self.collectionView.selectItem(at: centeredIndexPath, animated: true, scrollPosition: .centeredHorizontally)
     }
     
     /*

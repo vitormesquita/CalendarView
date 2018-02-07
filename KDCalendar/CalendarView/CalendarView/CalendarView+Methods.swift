@@ -9,6 +9,7 @@
 
 import UIKit
 
+//TODO find a better place to put these methods
 extension CalendarView {
     
     /**
@@ -48,6 +49,8 @@ extension CalendarView {
     
     /**
      Generate and increment `monthInfoForSection` variable
+     - parameters:
+        - section: represents uicollectionView section, cause each section is a month
      */
     internal func buildMonthInfoBy(section: Int) -> Bool {
         var monthOffsetComponents = DateComponents()

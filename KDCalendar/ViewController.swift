@@ -61,17 +61,15 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         super.viewDidAppear(animated)
-        
-        EventsLoader.load(from: self.startDate(), to: self.endDate()) { // (events:[CalendarEvent]?) in
-            if let events = $0 {
+
+//        EventsLoader.load(from: self.startDate(), to: self.endDate()) { // (events:[CalendarEvent]?) in
+//            if let events = $0 {
 //                self.calendarView.events = events
-            } else {
-                // notify for access not access not granted
-            }
-        }
-        
+//            } else {
+//                // notify for access not access not granted
+//            }
+//        }
         
         var tomorrowComponents = DateComponents()
         tomorrowComponents.day = 1
@@ -80,10 +78,7 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
         
         let tomorrow = self.calendarView.calendar.date(byAdding: tomorrowComponents, to: today)!
         self.calendarView.selectDate(tomorrow)
-        
-        self.calendarView.setDisplayDate(today)
         self.datePicker.setDate(today, animated: false)
-        
     }
 
     // MARK : KDCalendarDataSource
@@ -130,8 +125,8 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
     }
     
     @IBAction func goToPreviousMonth(_ sender: Any) {
-//        self.calendarView.goToPreviousMonth()
-        self.calendarView.selectDate(Date())
+        self.calendarView.goToPreviousMonth()
+//        self.calendarView.selectDate(Date())
     }
     
     @IBAction func goToNextMonth(_ sender: Any) {
