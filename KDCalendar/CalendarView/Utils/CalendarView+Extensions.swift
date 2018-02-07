@@ -41,3 +41,23 @@ extension String {
         return String(subString)
     }
 }
+
+extension IndexPath {
+    
+    func equals(_ indexPath: IndexPath?, extraItem: Int = 0) -> Bool {
+        guard let indexPath = indexPath else { return false }
+        let formattedItem = indexPath.item + extraItem
+        return item == formattedItem && indexPath.section == section
+    }
+    
+    func isLessThan(_ indexPath: IndexPath?, extraItem: Int = 0) -> Bool {
+        guard let indexPath = indexPath else { return true }
+        let formattedItem = indexPath.item + extraItem
+        
+        guard indexPath.section <= section else {
+            return true
+        }
+    
+        return item < formattedItem && indexPath.section >= section
+    }
+}

@@ -26,55 +26,6 @@
 import UIKit
 import EventKit
 
-struct EventLocation {
-    let title: String
-    let latitude: Double
-    let longitude: Double
-}
-
-public struct CalendarEvent {
-    
-    let startDate: Date
-    let endDate: Date
-    
-    let title: String?
-    
-    public init(startDate: Date, endDate: Date, title: String? = nil) {
-        self.startDate = startDate
-        self.endDate = endDate
-        self.title = title
-    }
-}
-
-//public protocol CalendarViewDataSource {
-//    func startDate() -> Date
-//    func endDate() -> Date
-//}
-//
-//extension CalendarViewDataSource {
-//
-//    func startDate() -> Date {
-//        return Date()
-//    }
-//    func endDate() -> Date {
-//        return Date()
-//    }
-//}
-
-public protocol CalendarViewDelegate {
-    
-    func calendar(_ calendar : CalendarView, didScrollToMonth date : Date) -> Void
-    func calendar(_ calendar : CalendarView, didSelectDate date : Date, withEvents events: [CalendarEvent]) -> Void
-    /* optional */
-    func calendar(_ calendar : CalendarView, canSelectDate date : Date) -> Bool
-    func calendar(_ calendar : CalendarView, didDeselectDate date : Date) -> Void
-}
-
-extension CalendarViewDelegate {
-    func calendar(_ calendar : CalendarView, canSelectDate date : Date) -> Bool { return true }
-    func calendar(_ calendar : CalendarView, didDeselectDate date : Date) -> Void { return }
-}
-
 // MARK: - Constants
 internal let maxNumberOfWeeks: CGFloat = 6
 internal let numberOfDaysInWeek: CGFloat = 7
@@ -82,21 +33,17 @@ internal let cellReuseIdentifier = "CalendarDayCell"
 
 public class CalendarView: UIView {
     
+    internal var displayDate: Date?
     internal var todayIndexPath: IndexPath?
     
-    internal(set) var selectedIndexPaths    = [IndexPath]()
-    internal(set) var selectedDates         = [Date]()
+    internal var selectedIndexPaths = [IndexPath]()
     
-    internal var monthInfoForSection = [Int:(firstDay: Int, daysTotal: Int)]()
-    
+    internal var monthInfoForSection = [Int: (firstDay: Int, daysTotal: Int)]()
     internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
     
     // MARK: - Public
     
-    public var displayDate: Date?
-    
     public var multipleSelectionEnable = true
-    
     public var delegate: CalendarViewDelegate?
     
     public var direction: UICollectionViewScrollDirection = .horizontal {
@@ -209,7 +156,7 @@ public class CalendarView: UIView {
         collectionView.dataSource = self
         collectionView.isPagingEnabled = true
         
-        collectionView.register(CalendarDayCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        collectionView.register(CalendarDayViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
     }
     
     private func autoLayout() {
@@ -233,11 +180,7 @@ public class CalendarView: UIView {
     
     internal func resetDisplayDate() {
         guard let displayDate = self.displayDate else { return }
-        
-        self.collectionView.setContentOffset(
-            self.scrollViewOffset(for: displayDate),
-            animated: false
-        )
+        self.collectionView.setContentOffset(self.scrollViewOffset(for: displayDate), animated: false)
     }
 }
 

@@ -27,7 +27,6 @@ import UIKit
 
 extension CalendarView: UICollectionViewDataSource {
     
-    
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         guard self.startDate <= self.endDate else { fatalError("Start date cannot be later than end date.") }
         
@@ -44,36 +43,41 @@ extension CalendarView: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarDayCell
+        let dayCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarDayViewCell
         
         guard let (firstWeekDayIndex, totalNumberOfDays) = self.monthInfoForSection[indexPath.section] else { return dayCell }
         
-        let fromStartOfMonthIndexPath = IndexPath(item: indexPath.item - firstWeekDayIndex, section: indexPath.section) // if the first is wednesday, add 2
-        
         let lastDayIndex = firstWeekDayIndex + totalNumberOfDays
         
-        //TODO Refactoring this
-        if (firstWeekDayIndex..<lastDayIndex).contains(indexPath.item) { // item within range from first to last day
-            dayCell.textLabel.text = String(fromStartOfMonthIndexPath.item + 1)
-            dayCell.isHidden = false
+        let dayIsOnMonth = (firstWeekDayIndex..<lastDayIndex).contains(indexPath.item) // item within range from first to last day
+        dayCell.isHidden = !dayIsOnMonth
+        
+        if dayIsOnMonth {
+            
+            let day = (indexPath.item - firstWeekDayIndex) + 1
+            dayCell.populateWith(day: day)
+            
+            if selectedIndexPaths.contains(indexPath) {
+                dayCell.isSelectedCell()
+                
+            } else if indexPath.equals(todayIndexPath, extraItem: firstWeekDayIndex) {
+                dayCell.isToday()
+                
+            } else if indexPath.isLessThan(todayIndexPath, extraItem: firstWeekDayIndex) {
+                dayCell.isLessThanCurrentDay()
+                
+            } else {
+                dayCell.isDefault()
+            }
+            
+            //            if let eventsForDay = self.eventsByIndexPath[indexPath] {
+            //                dayCell.eventsCount = eventsForDay.count
+            //            } else {
+            //                dayCell.eventsCount = 0
+            //            }
             
         } else {
-            dayCell.textLabel.text = ""
-            dayCell.isHidden = true
-        }
-
-        
-        let isToday = (todayIndexPath != nil) ? (todayIndexPath!.section == indexPath.section && todayIndexPath!.item + firstWeekDayIndex == indexPath.item) : false
-        let isSelected = selectedIndexPaths.contains(indexPath)
-        
-        let isBeforeToday = todayIndexPath != nil ? indexPath < todayIndexPath! : true
-        
-        dayCell.manageStyle(isToday: isToday, isSelected: isSelected, isBeforeToday: isBeforeToday)
-        
-        if let eventsForDay = self.eventsByIndexPath[indexPath] {
-            dayCell.eventsCount = eventsForDay.count
-        } else {
-            dayCell.eventsCount = 0
+            dayCell.clear()
         }
         
         return dayCell

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,10 +15,6 @@
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="CalendarView" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -24,16 +22,10 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hW4-le-uM3" customClass="CalendarView" customModule="CalendarView" customModuleProvider="target">
                                 <rect key="frame" x="16" y="36" width="343" height="343"/>
                                 <color key="backgroundColor" red="0.94004629629629632" green="0.80393518518518514" blue="0.87748842592592591" alpha="0.87" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hW4-le-uM3" secondAttribute="height" multiplier="1:1" id="hMH-HK-L2P"/>
+                                </constraints>
                             </view>
-                            <datePicker hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZI5-5E-Eq0">
-                                <rect key="frame" x="16" y="431" width="343" height="216"/>
-                                <date key="date" timeIntervalSinceReferenceDate="482061469.277242">
-                                    <!--2016-04-11 09:57:49 +0000-->
-                                </date>
-                                <connections>
-                                    <action selector="onValueChange:" destination="vXZ-lx-hvc" eventType="valueChanged" id="YJA-Ef-5x9"/>
-                                </connections>
-                            </datePicker>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BMl-ka-oh2">
                                 <rect key="frame" x="16" y="387" width="343" height="30"/>
                                 <subviews>
@@ -78,21 +70,18 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94178299492385786" green="0.94178299492385786" blue="0.94178299492385786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ZI5-5E-Eq0" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="6CH-G3-Mhc"/>
                             <constraint firstItem="BMl-ka-oh2" firstAttribute="leading" secondItem="hW4-le-uM3" secondAttribute="leading" id="7Z1-Xk-xnJ"/>
-                            <constraint firstItem="hW4-le-uM3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="8wO-aF-0Eb"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ZI5-5E-Eq0" secondAttribute="bottom" constant="20" id="EM0-cT-QdX"/>
+                            <constraint firstItem="hW4-le-uM3" firstAttribute="leading" secondItem="HUa-us-MU2" secondAttribute="leading" constant="16" id="8wO-aF-0Eb"/>
+                            <constraint firstItem="HUa-us-MU2" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BMl-ka-oh2" secondAttribute="bottom" constant="8" id="F5F-4L-yWc"/>
                             <constraint firstItem="BMl-ka-oh2" firstAttribute="top" secondItem="hW4-le-uM3" secondAttribute="bottom" constant="8" id="KWY-nY-Oys"/>
-                            <constraint firstItem="ZI5-5E-Eq0" firstAttribute="top" secondItem="BMl-ka-oh2" secondAttribute="bottom" constant="14" id="KkZ-8A-NM7"/>
-                            <constraint firstItem="hW4-le-uM3" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="16" id="MZh-zF-zaS"/>
+                            <constraint firstItem="hW4-le-uM3" firstAttribute="top" secondItem="HUa-us-MU2" secondAttribute="top" constant="16" id="MZh-zF-zaS"/>
                             <constraint firstItem="BMl-ka-oh2" firstAttribute="trailing" secondItem="hW4-le-uM3" secondAttribute="trailing" id="Prb-A3-Qwc"/>
-                            <constraint firstAttribute="trailing" secondItem="ZI5-5E-Eq0" secondAttribute="trailing" constant="16" id="jgi-JH-Dcg"/>
-                            <constraint firstAttribute="trailing" secondItem="hW4-le-uM3" secondAttribute="trailing" constant="16" id="vYW-BD-MiV"/>
+                            <constraint firstItem="HUa-us-MU2" firstAttribute="trailing" secondItem="hW4-le-uM3" secondAttribute="trailing" constant="16" id="vYW-BD-MiV"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="HUa-us-MU2"/>
                     </view>
                     <connections>
                         <outlet property="calendarView" destination="hW4-le-uM3" id="RAW-Yt-1by"/>
-                        <outlet property="datePicker" destination="ZI5-5E-Eq0" id="TEh-9D-yoJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

@@ -78,7 +78,7 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
         
         let tomorrow = self.calendarView.calendar.date(byAdding: tomorrowComponents, to: today)!
         self.calendarView.selectDate(tomorrow)
-        self.datePicker.setDate(today, animated: false)
+//        self.datePicker.setDate(today, animated: false)
     }
 
     // MARK : KDCalendarDataSource
@@ -114,7 +114,7 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
     
     func calendar(_ calendar: CalendarView, didScrollToMonth date : Date) {
     
-        self.datePicker.setDate(date, animated: true)
+//        self.datePicker.setDate(date, animated: true)
     }
     
     
