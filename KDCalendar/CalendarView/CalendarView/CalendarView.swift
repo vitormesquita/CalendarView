@@ -91,22 +91,6 @@ public class CalendarView: UIView {
     
     internal var eventsByIndexPath = [IndexPath: [CalendarEvent]]()
     
-    //    public var events: [CalendarEvent] = [] {
-    //        didSet {
-    //            self.eventsByIndexPath.removeAll()
-    //
-    //            for event in events {
-    //                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
-    //
-    //                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
-    //                eventsForIndexPath.append(event)
-    //                eventsByIndexPath[indexPath] = eventsForIndexPath
-    //            }
-    //
-    //            DispatchQueue.main.async { self.collectionView.reloadData() }
-    //        }
-    //    }
-    
     // MARK: - Public
     
     public var displayDate: Date?
@@ -133,6 +117,22 @@ public class CalendarView: UIView {
         didSet {
             cacheOfEndOfMonth = buildLastDayOfMonthFrom(date: endDate)!
             collectionView.reloadData()
+        }
+    }
+    
+    public var events: [CalendarEvent] = [] {
+        didSet {
+            self.eventsByIndexPath.removeAll()
+            
+            for event in events {
+                guard let indexPath = self.indexPathForDate(event.startDate) else { continue }
+                
+                var eventsForIndexPath = eventsByIndexPath[indexPath] ?? []
+                eventsForIndexPath.append(event)
+                eventsByIndexPath[indexPath] = eventsForIndexPath
+            }
+            
+            DispatchQueue.main.async { self.collectionView.reloadData() }
         }
     }
     
