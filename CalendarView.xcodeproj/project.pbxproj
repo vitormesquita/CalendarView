@@ -202,8 +202,8 @@
 		FC9DB3B7202BA29A003A740A /* Event */ = {
 			isa = PBXGroup;
 			children = (
-				FC9DB3B4202BA1B0003A740A /* CalendarEvent.swift */,
 				C7EF3F4B1FA1D6F900C2DF2D /* EventsLoader.swift */,
+				FC9DB3B4202BA1B0003A740A /* CalendarEvent.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";

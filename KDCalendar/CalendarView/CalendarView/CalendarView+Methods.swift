@@ -103,7 +103,7 @@ extension CalendarView {
     /**
      Get date from indexPath
      */
-    func dateFromIndexPath(_ indexPath: IndexPath) -> Date? {
+    internal func dateFromIndexPath(_ indexPath: IndexPath) -> Date? {
         let month = indexPath.section
         guard let monthInfo = monthInfoForSection[month] else { return nil }
 
@@ -163,9 +163,11 @@ extension CalendarView {
     }
 }
 
+// MARK: - Methods to interact with scroll view
 extension CalendarView {
     
     /**
+     Update header and notify `delegate` that scroll to month
      */
     internal func updateAndNotifyScrolling() {
         guard let date = self.dateFromScrollViewPosition() else { return }
@@ -174,6 +176,7 @@ extension CalendarView {
     }
     
     /**
+     Get current date from scroll position
      */
     internal func dateFromScrollViewPosition() -> Date? {
         var page: Int = 0
@@ -195,16 +198,15 @@ extension CalendarView {
     }
     
     /**
+     Update header label with displayed month and year
      */
     internal func displayDateOnHeader(_ date: Date) {
-        let month = self.calendar.component(.month, from: date) // get month
+        let month = self.calendar.component(.month, from: date)
+        let year = self.calendar.component(.year, from: date)
         
         let monthName = DateFormatter().monthSymbols[(month-1) % 12] // 0 indexed array
         
-        let year = self.calendar.component(.year, from: date)
-        
-        self.headerView.monthLabel.text = monthName + " " + String(year)
-        
+        self.headerView.setHeaderTitle("\(monthName) \(year)")
         self.displayDate = date
     }
 }

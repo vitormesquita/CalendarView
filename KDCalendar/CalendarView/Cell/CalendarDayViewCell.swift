@@ -59,26 +59,12 @@ open class CalendarDayViewCell: UICollectionViewCell {
     override open func layoutSubviews() {
         super.layoutSubviews()
         configureViews()
-        //        var elementsFrame = self.bounds.insetBy(dx: 3.0, dy: 3.0)
-        //
-        //        if CalendarView.Style.cellShape.isRound { // square of
-        //            let smallestSide = min(elementsFrame.width, elementsFrame.height)
-        //            elementsFrame = elementsFrame.insetBy(dx: (elementsFrame.width - smallestSide) / 2.0, dy: (elementsFrame.height - smallestSide) / 2.0)
-        //        }
-        //
-        //        self.bgView.frame           = elementsFrame
-        //        self.textLabel.frame        = elementsFrame
-        //
-        //        let size                            = self.bounds.height * 0.08 // always a percentage of the whole cell
-        //        self.dotsView.frame                 = CGRect(x: 0, y: 0, width: size, height: size)
-        //        self.dotsView.center                = CGPoint(x: self.textLabel.center.x, y: self.bounds.height - (2.5 * size))
-        //        self.dotsView.layer.cornerRadius    = size * 0.5 // round it
-        //
+
         switch CalendarView.Style.cellShape {
         case .square:
             self.containerView.layer.cornerRadius = 0.0
         case .round:
-            self.containerView.layer.cornerRadius = containerView.bounds.size.width * 0.5
+            self.containerView.layer.cornerRadius = containerView.bounds.width * 0.5
         case .bevel(let radius):
             self.containerView.layer.cornerRadius = radius
         }
@@ -92,10 +78,12 @@ open class CalendarDayViewCell: UICollectionViewCell {
         
         contentView.addSubview(containerView)
         containerViewConstraints = [
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: 2),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2)
+            containerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: 2),
+            containerView.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: -2),
+            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 2),
+            containerView.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -2),
+            containerView.heightAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1),
+            containerView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
         
         NSLayoutConstraint.activate(containerViewConstraints)
