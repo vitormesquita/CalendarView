@@ -179,16 +179,13 @@ public class CalendarView: UIView {
 // MARK: - Public methods
 extension CalendarView {
     
-    /**
-     Reload all components in collection view
-     */
+    
+    /// Reload all components in collection view
     public func reloadData() {
         self.collectionView.reloadData()
     }
     
-    /**
-     Selected date and scroll at correspondent month
-     */
+    /// Selected date and scroll at correspondent month
     public func selectDate(_ date: Date) {
         guard let indexPath = self.indexPathForDate(date) else { return }
         self.collectionView(collectionView, didSelectItemAt: indexPath)
@@ -198,25 +195,20 @@ extension CalendarView {
         self.collectionView.selectItem(at: centeredIndexPath, animated: true, scrollPosition: .centeredHorizontally)
     }
     
-    /*
-     Deselect date from a date
-     */
+    /// Deselect date from a date
     public func deselectDate(_ date: Date) {
         guard let indexPath = self.indexPathForDate(date) else { return }
         self.collectionView.deselectItem(at: indexPath, animated: false)
         self.collectionView(collectionView, didSelectItemAt: indexPath)
     }
     
-    /*
-     Scroll to next month by current
-     */
+    /// Scroll to next month by current
     public func goToNextMonth() {
         goToMonthWithOffet(1)
     }
     
-    /*
-     Scroll to previus month by current
-     */
+    
+    /// Scroll to previus month by current
     public func goToPreviousMonth() {
         goToMonthWithOffet(-1)
     }

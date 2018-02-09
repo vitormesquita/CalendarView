@@ -12,22 +12,20 @@ import UIKit
 // MARK: - Build dates from others and increments variables
 extension CalendarView {
     
-    /**
-     Rebuild date with first day of month
-     - parameters:
-        - date: Date to extract month and rebuild with first day
-     */
+    /// Rebuild date with first day of month
+    /// - parameters:
+    ///    - date: Date to extract month and rebuild with first day
+    ///
     internal func buildFirstDayOfMonthFrom(date: Date) -> Date? {
         var dateComponents = calendar.dateComponents([.era, .year, .month], from: date)
         dateComponents.day = 1
         return calendar.date(from: dateComponents)
     }
     
-    /**
-     Rebuild date with last day of month
-     - parameters:
-        - date: Date to extract month and rebuild with end day
-     */
+    /// Rebuild date with last day of month
+    /// - parameters:
+    ///     - date: Date to extract month and rebuild with end day
+    ///
     internal func buildLastDayOfMonthFrom(date: Date) -> Date? {
         var dateComponents = calendar.dateComponents([.era, .year, .month], from: date)
         let range = calendar.range(of: .day, in: .month, for: date)
@@ -35,11 +33,10 @@ extension CalendarView {
         return calendar.date(from: dateComponents)
     }
     
-    /**
-     Generate and increment `monthInfoForSection` variable with section (Month) and informations
-     - parameters:
-        - section: represents uicollectionView section, cause each section is a month
-     */
+    /// Generate and increment `monthInfoForSection` variable with section (Month) and informations
+    /// - parameters:
+    ///      - section: represents uicollectionView section, cause each section is a month
+    ///
     internal func buildMonthInfoBy(section: Int) -> Bool {
         var monthOffsetComponents = DateComponents()
         monthOffsetComponents.month = section
@@ -52,11 +49,10 @@ extension CalendarView {
         return true
     }
     
-    /**
-     Get first day and total of days in month from date
-     - Parameters:
-        - date: date to get these informations
-     */
+    /// Get first day and total of days in month from date
+    /// - Parameters:
+    ///     - date: date to get these informations
+    ///
     internal func getMonthInfo(for date: Date) -> (firstDay: Int, daysTotal: Int)? {
         
         var firstWeekdayIndex = self.calendar.component(.weekday, from: date)
@@ -71,11 +67,10 @@ extension CalendarView {
 // MARK: Convertions Date to IndexPath and vice-versa
 extension CalendarView {
     
-    /**
-     Get indexPath matched with date
-     - Parameters:
-        - date: Date to get indexPath in `monthInfoForSection`
-     */
+    /// Get indexPath matched with date
+    /// - Parameters:
+    ///    - date: Date to get indexPath in `monthInfoForSection`
+    ///
     internal func indexPathForDate(_ date: Date) -> IndexPath? {
         let distanceFromStartDate = self.calendar.dateComponents([.month, .day], from: self.cacheOfStartOfMonth, to: date)
         
@@ -88,9 +83,7 @@ extension CalendarView {
         return IndexPath(item: day + firstDayIndex, section: month)
     }
     
-    /**
-     Generate indexPath from today Date if it's contains in range of dates
-     */
+    /// Generate indexPath from today Date if it's contains in range of dates
     internal func getTodayIndexPath(startDate: Date, endDate: Date) -> IndexPath? {
         let today = Date()
         
@@ -100,13 +93,11 @@ extension CalendarView {
         return IndexPath(item: distanceFromTodayComponents.day!, section: distanceFromTodayComponents.month!)
     }
     
-    /**
-     Get date from indexPath
-     */
+    /// Get date from indexPath
     internal func dateFromIndexPath(_ indexPath: IndexPath) -> Date? {
         let month = indexPath.section
         guard let monthInfo = monthInfoForSection[month] else { return nil }
-
+        
         let components = DateComponents(month: month, day: indexPath.item - monthInfo.firstDay)
         return self.calendar.date(byAdding: components, to: self.cacheOfStartOfMonth)
     }
@@ -115,11 +106,10 @@ extension CalendarView {
 // MARK: - Methods to interact with `collectionView`
 extension CalendarView {
     
-    /**
-     Add offset at `displayDate` to display next or previous month in calendar
-     - Parameters:
-        - offset: represents number of months to go from displayMonth
-     */
+    /// Add offset at `displayDate` to display next or previous month in calendar
+    /// - Parameters:
+    ///     - offset: represents number of months to go from displayMonth
+    ///
     internal func goToMonthWithOffet(_ offset: Int) {
         guard let displayDate = self.displayDate,
             let newDate = self.calendar.date(byAdding: DateComponents(month: offset), to: displayDate) else {
@@ -129,23 +119,21 @@ extension CalendarView {
         self.setDisplayDate(newDate, animated: true)
     }
     
-    /**
-     Scroll to date and update date on Header
-     - parameters:
-        - date: Date to extract month and year to scroll to correct section
-        - animated: to handle animation if want
-     */
+    /// Scroll to date and update date on Header
+    /// - parameters:
+    ///      - date: Date to extract month and year to scroll to correct section
+    ///      - animated: to handle animation if want
+    ///
     internal func setDisplayDate(_ date : Date, animated: Bool = false) {
         guard (date > startDate) && (date < endDate) else { return }
         self.collectionView.setContentOffset(self.scrollViewOffset(for: date), animated: animated)
         self.displayDateOnHeader(date)
     }
     
-    /**
-     Get corret point from `collectionView` by date
-     - Parameters:
-        - date: Date to extract month and scroll to correct section
-     */
+    /// Get corret point from `collectionView` by date
+    /// - Parameters:
+    ///    - date: Date to extract month and scroll to correct section
+    ///
     internal func scrollViewOffset(for date: Date) -> CGPoint {
         var point = CGPoint.zero
         
@@ -166,18 +154,14 @@ extension CalendarView {
 // MARK: - Methods to interact with scroll view
 extension CalendarView {
     
-    /**
-     Update header and notify `delegate` that scroll to month
-     */
+    /// Update header and notify `delegate` that scroll to month
     internal func updateAndNotifyScrolling() {
         guard let date = self.dateFromScrollViewPosition() else { return }
         self.displayDateOnHeader(date)
         self.delegate?.calendar(self, didScrollToMonth: date)
     }
     
-    /**
-     Get current date from scroll position
-     */
+    /// Get current date from scroll position
     internal func dateFromScrollViewPosition() -> Date? {
         var page: Int = 0
         
@@ -197,9 +181,7 @@ extension CalendarView {
         return self.calendar.date(byAdding: monthsOffsetComponents, to: self.cacheOfStartOfMonth);
     }
     
-    /**
-     Update header label with displayed month and year
-     */
+    /// Update header label with displayed month and year
     internal func displayDateOnHeader(_ date: Date) {
         let month = self.calendar.component(.month, from: date)
         let year = self.calendar.component(.year, from: date)

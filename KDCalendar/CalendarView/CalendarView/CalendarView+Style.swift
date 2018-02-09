@@ -53,6 +53,6 @@ extension CalendarView {
         public static var cellSelectedTextColor: UIColor = .black
         
         //Before Today Style
-        public static var cellBeforeTodayTextColor: UIColor = cellTextColorDefault
+        public static var cellBeforeTodayTextColor: UIColor = .lightGray
     }
 }
