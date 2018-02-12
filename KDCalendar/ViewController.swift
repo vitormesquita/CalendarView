@@ -63,13 +63,13 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-//        EventsLoader.load(from: self.startDate(), to: self.endDate()) { // (events:[CalendarEvent]?) in
-//            if let events = $0 {
-//                self.calendarView.events = events
-//            } else {
-//                // notify for access not access not granted
-//            }
-//        }
+        EventsLoader.load(from: self.startDate(), to: self.endDate()) { // (events:[CalendarEvent]?) in
+            if let events = $0 {
+                self.calendarView.events = events
+            } else {
+                // notify for access not access not granted
+            }
+        }
         
         var tomorrowComponents = DateComponents()
         tomorrowComponents.day = 1

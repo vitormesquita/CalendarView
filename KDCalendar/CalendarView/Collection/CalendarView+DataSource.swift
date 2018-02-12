@@ -70,11 +70,7 @@ extension CalendarView: UICollectionViewDataSource {
                 dayCell.isDefault()
             }
             
-            //            if let eventsForDay = self.eventsByIndexPath[indexPath] {
-            //                dayCell.eventsCount = eventsForDay.count
-            //            } else {
-            //                dayCell.eventsCount = 0
-            //            }
+            dayCell.setMarkEvents(events: self.eventsByIndexPath[indexPath])
             
         } else {
             dayCell.clear()

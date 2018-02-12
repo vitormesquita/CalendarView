@@ -42,14 +42,18 @@ open class CalendarDayViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let eventsContainerView = UIView()
+    private var eventsStackConstraints: [NSLayoutConstraint] = []
+    private lazy var eventsStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .equalCentering
+        stack.spacing = 2
+        stack.alignment = .center
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
     
-    var eventsCount = 0 {
-        didSet {
-            //            self.dotsView.isHidden = (eventsCount == 0)
-            self.setNeedsLayout()
-        }
-    }
+    private var maxNumbOfEvents = 0
     
     override open var description: String {
         let dayString = self.dayLabel.text ?? " "
@@ -68,6 +72,8 @@ open class CalendarDayViewCell: UICollectionViewCell {
         case .bevel(let radius):
             self.containerView.layer.cornerRadius = radius
         }
+        
+        maxNumbOfEvents = Int(self.containerView.bounds.size.width) / 4
     }
     
     private func configureViews() {
@@ -75,6 +81,8 @@ open class CalendarDayViewCell: UICollectionViewCell {
         containerView.removeFromSuperview()
         NSLayoutConstraint.deactivate(dayLabelConstraints)
         dayLabel.removeFromSuperview()
+        NSLayoutConstraint.deactivate(eventsStackConstraints)
+        eventsStackView.removeFromSuperview()
         
         contentView.addSubview(containerView)
         containerViewConstraints = [
@@ -85,7 +93,6 @@ open class CalendarDayViewCell: UICollectionViewCell {
             containerView.heightAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1),
             containerView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
-        
         NSLayoutConstraint.activate(containerViewConstraints)
         
         containerView.addSubview(dayLabel)
@@ -95,8 +102,15 @@ open class CalendarDayViewCell: UICollectionViewCell {
             dayLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             dayLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ]
-        
         NSLayoutConstraint.activate(dayLabelConstraints)
+        
+        containerView.addSubview(eventsStackView)
+        eventsStackConstraints = [
+            eventsStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            eventsStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            eventsStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
+        ]
+        NSLayoutConstraint.activate(eventsStackConstraints)
     }
 }
 
@@ -108,6 +122,7 @@ extension CalendarDayViewCell {
     
     func clear() {
         dayLabel.text = nil
+        eventsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     
     func isSelectedCell() {
@@ -134,5 +149,24 @@ extension CalendarDayViewCell {
         containerView.backgroundColor = .clear
         containerView.layer.borderColor = UIColor.clear.cgColor
         dayLabel.textColor = CalendarView.Style.cellTextColorDefault
+    }
+    
+    func setMarkEvents(events: [CalendarEvent]?) {
+        eventsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        guard let events = events else { return }
+        
+        for index in 0...maxNumbOfEvents {
+            if index < events.count {
+                let currentEvent = events[index]
+                
+                let eventView = UIView()
+                eventView.backgroundColor = currentEvent.color
+//                eventView.widthAnchor.constraint(equalToConstant: 2).isActive = true
+                eventView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+                
+                eventsStackView.addArrangedSubview(eventView)
+            }
+        }
     }
 }

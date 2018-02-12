@@ -118,6 +118,11 @@ public class CalendarView: UIView {
         return flowLayout
     }()
     
+    // MARK: Private
+    
+    private var headerConstraints: [NSLayoutConstraint] = []
+    private var collectionConstraints: [NSLayoutConstraint] = []
+    
     // MARK: UIView methods
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -136,9 +141,14 @@ public class CalendarView: UIView {
     
     override open func layoutSubviews() {
         super.layoutSubviews()
-        
         autoLayout()
+        
         flowLayout.itemSize = self.cellSize()
+        flowLayout.invalidateLayout()
+        
+        if let displayDate = displayDate {
+            setDisplayDate(displayDate)
+        }
     }
     
     // MARK: Create Subviews
@@ -157,12 +167,15 @@ public class CalendarView: UIView {
     
     // MARK: - Layout
     private func autoLayout() {
-        let headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+        NSLayoutConstraint.deactivate(headerConstraints)
+        NSLayoutConstraint.deactivate(collectionConstraints)
+        
+        headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
                                  headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
                                  headerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
                                  headerView.heightAnchor.constraint(equalToConstant: CalendarView.Style.headerHeight)]
         
-        let collectionConstraints = [collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
+        collectionConstraints = [collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
                                      collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
                                      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
                                      collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)]
