@@ -87,7 +87,7 @@ open class CalendarDayViewCell: UICollectionViewCell {
             containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 2),
             containerView.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -2),
             containerView.heightAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 1),
-            containerView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            containerView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ]
         NSLayoutConstraint.activate(containerViewConstraints)
         
