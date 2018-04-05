@@ -89,9 +89,10 @@ public class CalendarView: UIView {
     // MARK: - Internal lazys
     
     internal lazy var calendar : Calendar = {
-        var gregorian = Calendar(identifier: .gregorian)
-        gregorian.timeZone = TimeZone(abbreviation: "UTC")!
-        return gregorian
+//        var gregorian = Calendar(identifier: .gregorian)
+//        gregorian.timeZone = TimeZone(abbreviation: "UTC")!
+//        return gregorian
+        return Calendar.current
     }()
     
     internal lazy var headerView: CalendarHeaderView = {

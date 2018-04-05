@@ -42,15 +42,11 @@ open class CalendarDayViewCell: UICollectionViewCell {
         return label
     }()
     
-    private var eventsStackConstraints: [NSLayoutConstraint] = []
-    private lazy var eventsStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .equalCentering
-        stack.spacing = 2
-        stack.alignment = .center
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+    private var eventsViewConstraints: [NSLayoutConstraint] = []
+    private lazy var eventsContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private var maxNumbOfEvents = 0
@@ -63,7 +59,7 @@ open class CalendarDayViewCell: UICollectionViewCell {
     override open func layoutSubviews() {
         super.layoutSubviews()
         configureViews()
-
+        
         switch CalendarView.Style.cellShape {
         case .square:
             self.containerView.layer.cornerRadius = 0.0
@@ -81,8 +77,8 @@ open class CalendarDayViewCell: UICollectionViewCell {
         containerView.removeFromSuperview()
         NSLayoutConstraint.deactivate(dayLabelConstraints)
         dayLabel.removeFromSuperview()
-        NSLayoutConstraint.deactivate(eventsStackConstraints)
-        eventsStackView.removeFromSuperview()
+        NSLayoutConstraint.deactivate(eventsViewConstraints)
+        eventsContainerView.removeFromSuperview()
         
         contentView.addSubview(containerView)
         containerViewConstraints = [
@@ -104,13 +100,14 @@ open class CalendarDayViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(dayLabelConstraints)
         
-        containerView.addSubview(eventsStackView)
-        eventsStackConstraints = [
-            eventsStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            eventsStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            eventsStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
+        containerView.addSubview(eventsContainerView)
+        eventsViewConstraints = [
+            eventsContainerView.widthAnchor.constraint(equalToConstant: 4),
+            eventsContainerView.heightAnchor.constraint(equalToConstant: 4),
+            eventsContainerView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            eventsContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
         ]
-        NSLayoutConstraint.activate(eventsStackConstraints)
+        NSLayoutConstraint.activate(eventsViewConstraints)
     }
 }
 
@@ -122,7 +119,7 @@ extension CalendarDayViewCell {
     
     func clear() {
         dayLabel.text = nil
-        eventsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        eventsContainerView.subviews.forEach { $0.removeFromSuperview() }
     }
     
     func isSelectedCell() {
@@ -152,21 +149,13 @@ extension CalendarDayViewCell {
     }
     
     func setMarkEvents(events: [CalendarEvent]?) {
-        eventsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        eventsContainerView.backgroundColor = .clear
         
         guard let events = events else { return }
         
-        for index in 0...maxNumbOfEvents {
-            if index < events.count {
-                let currentEvent = events[index]
-                
-                let eventView = UIView()
-                eventView.backgroundColor = currentEvent.color
-//                eventView.widthAnchor.constraint(equalToConstant: 2).isActive = true
-                eventView.heightAnchor.constraint(equalToConstant: 2).isActive = true
-                
-                eventsStackView.addArrangedSubview(eventView)
-            }
+        if let firstEvent = events.first {
+            eventsContainerView.backgroundColor = firstEvent.color
+            eventsContainerView.layer.cornerRadius = 2
         }
     }
 }
