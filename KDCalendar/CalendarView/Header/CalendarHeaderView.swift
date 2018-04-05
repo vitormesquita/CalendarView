@@ -108,6 +108,6 @@ class CalendarHeaderView: UIView {
 extension CalendarHeaderView {
     
     func setHeaderTitle(_ text: String) {
-        monthLabel.text = text
+        monthLabel.text = text.firstUppercased
     }
 }

@@ -31,7 +31,6 @@ extension CalendarView {
         public static var cellEventColor = UIColor(red: 254.0/255.0, green: 73.0/255.0, blue: 64.0/255.0, alpha: 0.8)
         
         //Header
-        public static var headerHeight: CGFloat = 80.0
         public static var headerTextColor: UIColor = .white
         public static var headerFontName: String = "Helvetica"
         

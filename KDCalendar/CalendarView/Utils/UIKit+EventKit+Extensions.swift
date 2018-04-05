@@ -40,6 +40,11 @@ extension String {
         let subString = self[start..<end]
         return String(subString)
     }
+    
+    var firstUppercased: String {
+        guard let first = first else { return "" }
+        return String(first).uppercased() + dropFirst()
+    }
 }
 
 extension IndexPath {
@@ -57,7 +62,7 @@ extension IndexPath {
         guard indexPath.section <= section else {
             return true
         }
-    
+        
         return item < formattedItem && indexPath.section >= section
     }
 }

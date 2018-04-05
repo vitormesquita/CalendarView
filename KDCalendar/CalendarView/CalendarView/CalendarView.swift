@@ -89,9 +89,6 @@ public class CalendarView: UIView {
     // MARK: - Internal lazys
     
     internal lazy var calendar : Calendar = {
-//        var gregorian = Calendar(identifier: .gregorian)
-//        gregorian.timeZone = TimeZone(abbreviation: "UTC")!
-//        return gregorian
         return Calendar.current
     }()
     
@@ -171,23 +168,21 @@ public class CalendarView: UIView {
         NSLayoutConstraint.deactivate(headerConstraints)
         NSLayoutConstraint.deactivate(collectionConstraints)
         
-        headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+        headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
                                  headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-                                 headerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-//                                 headerView.heightAnchor.constraint(equalToConstant: CalendarView.Style.headerHeight)
-        ]
+                                 headerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)]
         
         collectionConstraints = [collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
                                      collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
                                      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-                                     collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)]
+                                     collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)]
         
         NSLayoutConstraint.activate(headerConstraints)
         NSLayoutConstraint.activate(collectionConstraints)
     }
     
     private func cellSize() -> CGSize {
-        return CGSize(width: bounds.size.width/numberOfDaysInWeek, height: (bounds.size.height - CalendarView.Style.headerHeight)/maxNumberOfWeeks)
+        return CGSize(width: bounds.size.width/numberOfDaysInWeek, height: (bounds.size.height - headerView.bounds.size.height)/maxNumberOfWeeks)
     }
 }
 
