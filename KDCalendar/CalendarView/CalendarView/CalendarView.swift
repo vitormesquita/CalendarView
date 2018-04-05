@@ -27,7 +27,7 @@ import UIKit
 import EventKit
 
 // MARK: - Constants
-internal let maxNumberOfWeeks: CGFloat = 6
+internal let maxNumberOfWeeks: CGFloat = 5
 internal let numberOfDaysInWeek: CGFloat = 7
 internal let cellReuseIdentifier = "CalendarDayCell"
 
