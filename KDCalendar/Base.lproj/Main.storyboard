@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,14 +19,14 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hW4-le-uM3" customClass="CalendarView" customModule="CalendarView" customModuleProvider="target">
-                                <rect key="frame" x="16" y="36" width="343" height="343"/>
+                                <rect key="frame" x="16" y="36" width="343" height="250"/>
                                 <color key="backgroundColor" red="0.94004629629629632" green="0.80393518518518514" blue="0.87748842592592591" alpha="0.87" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="hW4-le-uM3" secondAttribute="height" multiplier="1:1" id="hMH-HK-L2P"/>
+                                    <constraint firstAttribute="height" constant="250" id="oQ7-ha-vUx"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BMl-ka-oh2">
-                                <rect key="frame" x="16" y="387" width="343" height="30"/>
+                                <rect key="frame" x="16" y="294" width="343" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9N-eH-E3w">
                                         <rect key="frame" x="8" y="0.0" width="154" height="30"/>

@@ -27,7 +27,7 @@ import UIKit
 import EventKit
 
 // MARK: - Constants
-internal let maxNumberOfWeeks: CGFloat = 5
+internal let maxNumberOfWeeks: CGFloat = 6
 internal let numberOfDaysInWeek: CGFloat = 7
 internal let cellReuseIdentifier = "CalendarDayCell"
 
@@ -171,15 +171,16 @@ public class CalendarView: UIView {
         NSLayoutConstraint.deactivate(headerConstraints)
         NSLayoutConstraint.deactivate(collectionConstraints)
         
-        headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+        headerConstraints = [headerView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
                                  headerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
                                  headerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-                                 headerView.heightAnchor.constraint(equalToConstant: CalendarView.Style.headerHeight)]
+//                                 headerView.heightAnchor.constraint(equalToConstant: CalendarView.Style.headerHeight)
+        ]
         
         collectionConstraints = [collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 0),
                                      collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
                                      collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-                                     collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)]
+                                     collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)]
         
         NSLayoutConstraint.activate(headerConstraints)
         NSLayoutConstraint.activate(collectionConstraints)

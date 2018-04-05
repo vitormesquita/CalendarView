@@ -86,8 +86,6 @@ open class CalendarDayViewCell: UICollectionViewCell {
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -2),
             containerView.widthAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1),
             containerView.centerXAnchor.constraint(equalTo: centerXAnchor)
-            //containerView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 2),
-            //containerView.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -2),
         ]
         NSLayoutConstraint.activate(containerViewConstraints)
         
@@ -105,7 +103,7 @@ open class CalendarDayViewCell: UICollectionViewCell {
             eventsContainerView.widthAnchor.constraint(equalToConstant: 4),
             eventsContainerView.heightAnchor.constraint(equalToConstant: 4),
             eventsContainerView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            eventsContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
+            eventsContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4),
         ]
         NSLayoutConstraint.activate(eventsViewConstraints)
     }

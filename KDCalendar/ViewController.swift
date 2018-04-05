@@ -93,7 +93,7 @@ class ViewController: UIViewController/*, CalendarViewDataSource*/, CalendarView
     
     func endDate() -> Date {
         var dateComponents = DateComponents()
-        dateComponents.month = 2;
+        dateComponents.month = 12;
         dateComponents.day = -10
         let today = Date()
         let twoYearsFromNow = self.calendarView.calendar.date(byAdding: dateComponents, to: today)!

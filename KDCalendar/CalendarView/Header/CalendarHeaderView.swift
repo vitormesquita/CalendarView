@@ -76,7 +76,7 @@ class CalendarHeaderView: UIView {
         
         addSubview(monthLabel)
         monthLabelConstraints = [
-            monthLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            monthLabel.topAnchor.constraint(equalTo: topAnchor),
             monthLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             monthLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
         ]
@@ -85,7 +85,7 @@ class CalendarHeaderView: UIView {
         
         addSubview(weekDaysStack)
         weekDaysStackConstraints = [
-            weekDaysStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 4),
+            weekDaysStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 8),
             weekDaysStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             weekDaysStack.trailingAnchor.constraint(equalTo: trailingAnchor),
             weekDaysStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
